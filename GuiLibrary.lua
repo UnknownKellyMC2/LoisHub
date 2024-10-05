@@ -555,8 +555,9 @@ function Lib.Window(Argstable)
 		function Content.CreateToggle(Argstable)
 			local TogTXT = Argstable.Text and Argstable["Text"] or "Toggle"
 			local callback = Argstable.Function and Argstable["Function"] or function() end
+			local default = Argstable.Default ~= nil and Argstable["Default"] or false
 			
-			local toggled = false
+			local toggled = default
 			
 			local ToggleFrame = Instance.new("Frame")
 			local ButtonCorner = Instance.new("UICorner")
@@ -652,6 +653,16 @@ function Lib.Window(Argstable)
 			local img = ToggleEnabled
 			local sample = Circle
 			local ms = game.Players.LocalPlayer:GetMouse()
+			
+			if toggled then
+		        ToggleEnabled.ImageTransparency = 0
+		        ToggleDisabled.ImageTransparency = 1
+		    else
+		        ToggleEnabled.ImageTransparency = 1
+		        ToggleDisabled.ImageTransparency = 0
+		    end
+		    
+		    pcall(callback, toggled)
 			
 			ToggleTrigger.MouseButton1Click:Connect(function()
 				if toggled == false then
@@ -837,6 +848,7 @@ function Lib.Window(Argstable)
 		function Content.CreateTextbox(Argstable)
 			local TextboxTitle = Argstable.Text and Argstable["Text"] or "Textbox"
 			local callback = Argstable.Function and Argstable["Function"] or function() end
+			local default = Argstable.Default and Argstable["Default"] or ""
 			
 			local TextboxFrame = Instance.new("Frame")
 			local TextboxCorner = Instance.new("UICorner")
@@ -893,21 +905,21 @@ function Lib.Window(Argstable)
 			PencilImage.ImageRectSize = Vector2.new(36, 36)
 
 			Input.Name = "Input"
-			Input.Parent = TextboxFrame
-			Input.BackgroundColor3 = Color3.fromRGB(82, 82, 122)
-			Input.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			Input.BorderSizePixel = 0
-			Input.ClipsDescendants = true
-			Input.Position = UDim2.new(0.131, 0, 0.605, 0)
-			Input.Size = UDim2.new(0, 173, 0, 18)
-			Input.ZIndex = 5
-			Input.FontFace = Font.new([[rbxasset://fonts/families/Nunito.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-			Input.PlaceholderText = "Type Here"
-			Input.Text = ""
-			Input.TextColor3 = Color3.fromRGB(227, 227, 227)
-			Input.TextScaled = true
-			Input.TextSize = 23.000
-			Input.TextWrapped = true
+		    Input.Parent = TextboxFrame
+		    Input.BackgroundColor3 = Color3.fromRGB(82, 82, 122)
+		    Input.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		    Input.BorderSizePixel = 0
+		    Input.ClipsDescendants = true
+		    Input.Position = UDim2.new(0.131, 0, 0.605, 0)
+		    Input.Size = UDim2.new(0, 173, 0, 18)
+		    Input.ZIndex = 5
+		    Input.FontFace = Font.new([[rbxasset://fonts/families/Nunito.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+		    Input.PlaceholderText = "Type Here"
+		    Input.Text = default
+		    Input.TextColor3 = Color3.fromRGB(227, 227, 227)
+		    Input.TextScaled = true
+		    Input.TextSize = 23.000
+		    Input.TextWrapped = true
 
 			KeybindCorner.CornerRadius = UDim.new(0, 5)
 			KeybindCorner.Name = "KeybindCorner"
@@ -922,12 +934,15 @@ function Lib.Window(Argstable)
 					Input.Text = ""  
 				end
 			end)
+			
+			callback(default)
 		end
 		
 		function Content.CreateDropdown(Argstable)
 			local callback = Argstable.Function and Argstable["Function"] or function() end
 			local DropdownTitle = Argstable.Text and Argstable["Text"] or "Dropdown"
 			local list = Argstable.List and Argstable["List"] or {}
+			local default = Argstable.Default and Argstable["Default"] or nil
 			local IsDropped = false
 			local DropYSize = 134
 			local NormalYSize = 34
@@ -1050,6 +1065,8 @@ function Lib.Window(Argstable)
 			ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
 			ContentLayout.Padding = UDim.new(0, 8)
 			
+			DropdownLabel.Text = DropdownTitle .. (default and (": " .. default) or "")
+			
 			for i,v in next, list do
 				local Option = Instance.new("TextButton")
 				local UICorner = Instance.new("UICorner")
@@ -1073,7 +1090,7 @@ function Lib.Window(Argstable)
 					ClickSound.Volume = 2 
 					ClickSound.Pitch = 1
 
-					callback(v)
+					updateDropdown(v)
 					
 					ClickSound:Play()
 					
@@ -1091,7 +1108,16 @@ function Lib.Window(Argstable)
 
 				UICorner.Parent = Option
 			end
-
+            
+            local function updateDropdown(value)
+		        DropdownLabel.Text = DropdownTitle .. ": " .. value
+		        callback(value)
+		    end
+            
+            if default and v == default then
+	            updateDropdown(v)
+	        end
+            
 			ContentPadding.Name = "ContentPadding"
 			ContentPadding.Parent = DropdownContainer
 			ContentPadding.PaddingTop = UDim.new(0, 12)
