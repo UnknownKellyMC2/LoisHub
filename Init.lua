@@ -47,7 +47,6 @@ VersionLabel.TextSize = 14
 VersionLabel.TextColor3 = Color3.new(1, 1, 1)
 VersionLabel.Parent = InnerFrame
 
-
 local LoadingBarBackground = Instance.new("Frame")
 LoadingBarBackground.Size = UDim2.new(0.8, 0, 0.1, 0)
 LoadingBarBackground.Position = UDim2.new(0.1, 0, 0.6, 0)
