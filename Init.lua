@@ -1,4 +1,3 @@
--- Load the custom library
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/UnknownKellyMC2/LoisHub/refs/heads/main/GuiLibrary.lua"))()
 
 local Wait = wait
@@ -48,7 +47,7 @@ VersionLabel.TextSize = 14
 VersionLabel.TextColor3 = Color3.new(1, 1, 1)
 VersionLabel.Parent = InnerFrame
 
--- Create a loading bar (rounded square)
+
 local LoadingBarBackground = Instance.new("Frame")
 LoadingBarBackground.Size = UDim2.new(0.8, 0, 0.1, 0)
 LoadingBarBackground.Position = UDim2.new(0.1, 0, 0.6, 0)
@@ -68,7 +67,6 @@ local LoadingBarCorner = Instance.new("UICorner")
 LoadingBarCorner.CornerRadius = UDim .new(0.5, 0)
 LoadingBarCorner.Parent = LoadingBar
 
--- Animate the loading bar
 local TweenInfo = TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.In)
 local Tween = TweenService:Create(LoadingBar, TweenInfo, {Size = UDim2.new(1, 0, 1, 0)})
 
