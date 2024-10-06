@@ -1,18 +1,3 @@
-local MainProperties = {}
-
-function MainProperties:SetVersion(version)
-    self.CurrentVersion = version
-end
-
-function MainProperties:GetVersion()
-    return self.CurrentVersion or "Unknown"
-end
-
-function MainProperties:DestroyGUIVersion()
-    return ScreenGui:Destroy()
-end
-
--- #### Version Indicator ####
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -51,8 +36,12 @@ local VersionLabel = Instance.new("TextLabel")
 VersionLabel.Size = UDim2.new(0.8, 0, 0.1, 0)
 VersionLabel.Position = UDim2.new(0.1, 0, 0.8, 0)
 VersionLabel.BackgroundTransparency = 1
-VersionLabel.Text = "Version: " .. MainProperties:GetVersion()
+VersionLabel.Text = "Version 1.0"
 VersionLabel.Font = Enum.Font.SourceSans
 VersionLabel.TextSize = 14
 VersionLabel.TextColor3 = Color3.new(1, 1, 1)
 VersionLabel.Parent = InnerFrame
+
+task.wait(3)
+
+screenGui:Destroy()
